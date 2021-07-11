@@ -25,8 +25,19 @@ io.on("connection", (socket) =>{
 
     // listening to pre-offer emit event
     socket.on("pre-offer", (data) => {
-        console.log("pre-offer came");
-        console.log(data);
+        const { callType, calleePersonalCode } = data;
+        const callerPersonalCode = socket.id;
+
+        //secondary user exist ?
+        const connectedPeer = connectedPeers.find(peerSocketId => {
+            return peerSocketId === calleePersonalCode;
+        })
+
+        // emit pre-offer to secondary user if he exists
+        if(connectedPeer) {
+            let data = { callType, callerPersonalCode };
+            io.to(calleePersonalCode).emit("pre-offer", data);
+        }
     })
 
     // user disconnected
