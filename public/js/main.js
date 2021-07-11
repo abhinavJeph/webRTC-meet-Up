@@ -1,5 +1,5 @@
 import * as store from "./store.js";
-import * as wss from "./wss.js";
+import * as wss from "./wss.js";      //connection file
 import * as constants from "./constants.js";
 import * as webRtcHandler from "./webRtcHandler.js";
 

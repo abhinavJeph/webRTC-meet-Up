@@ -23,6 +23,12 @@ io.on("connection", (socket) =>{
     console.log(socket.id);
     connectedPeers.push(socket.id);
 
+    // listening to pre-offer emit event
+    socket.on("pre-offer", (data) => {
+        console.log("pre-offer came");
+        console.log(data);
+    })
+
     // user disconnected
     socket.on("disconnect", () => {
         console.log("User disconnected");
