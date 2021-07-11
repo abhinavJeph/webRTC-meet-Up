@@ -43,7 +43,7 @@ io.on("connection", (socket) =>{
     // user disconnected
     socket.on("disconnect", () => {
         console.log("User disconnected");
-        connectedPeers = connectedPeers.filter(peerSocketId => peerSocketId != socket.id);
+        connectedPeers = connectedPeers.filter(peerSocketId => peerSocketId !== socket.id);
         console.log("total users online : " + connectedPeers.length);
     });
 })
