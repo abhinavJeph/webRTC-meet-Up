@@ -44,7 +44,7 @@ export const getState = () => {
     return state;
 }
 
-let connectedUserDetails = { 
+let connectedUserDetails = {
     callType: null,
     socketId: null,
 }

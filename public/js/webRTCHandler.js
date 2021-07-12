@@ -157,13 +157,13 @@ const sendWebRTCOffer = async () => {
     connectedUserSocketId: store.getConnectedUserDetails().socketId,
     type: constants.webRTCSignaling.OFFER,
     offer: offer,   // offer = {sdp, type}
-  });  
+  });
 }
 
 export const handleWebRTCOffer = async (data) => {
   console.log("webRTC offer came");
   await peerConnection.setRemoteDescription(data.offer);
-  
+
   const answer = await peerConnection.createAnswer();
   await peerConnection.setLocalDescription(answer);
 
@@ -184,5 +184,35 @@ export const handleWebRTCCandidate = async (data) => {
     await peerConnection.addIceCandidate(data.candidate);
   } catch (err) {
     console.log("error occured when trying to add recieved ice candidate", err);
+  }
+}
+
+export const switchBetweenCameraAndScreenSharing = async (screenSharingActive) => {
+  try {
+    let newStream;
+    if (screenSharingActive) {
+      const { localStream } = store.getState();
+      store.getState().screenSharingStream.getTracks().forEach(track => track.stop()); //stop stream from sharing
+      newStream = localStream;
+    } else {
+      console.log("switching fro screen sharing");
+      const screenSharingStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      store.setScreenSharingStream(screenSharingStream);
+      newStream = screenSharingStream;
+    }
+
+    //replace track which sender is sending
+    const senders = peerConnection.getSenders();
+    const sender = senders.find(sender => {
+      return sender.track.kind === newStream.getVideoTracks()[0].kind;
+    })
+
+    if (sender) {
+      sender.replaceTrack(newStream.getVideoTracks()[0]);
+    }
+    ui.updateLocalVideo(newStream); //update local video with new stream
+    store.setScreenSharingActive(!screenSharingActive);
+  } catch (err) {
+    console.log("error occured when trying to switch screen sharing stream", err)
   }
 }
