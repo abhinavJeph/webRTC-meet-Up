@@ -8,6 +8,49 @@ const defaultConstraints = {
   video: true
 }
 
+const configuration = {
+  iceServers: {
+    urls: "stun:stun.l.google.com:13902"
+  }
+}
+
+const createPeerConnection = () => {
+  let peerConnection = new RTCPeerConnection(configuration);
+
+  // getting ice candidate from stun server
+  peerConnection.onicecandidate = (event) => {
+    console.log("getting ice candidate from stun server");
+    if (event.candidate) {
+      // send our ice candidate to other user
+    }
+  }
+
+  // this will occur when ice candidates are exchanged succesfully
+  peerConnection.onconnectionstatechange = (event) => {
+    if (peerConnection.connectionState == "connected") {
+      console.log("Successfully connected with other peer");
+    }
+  }
+
+  //recieving tracks
+  const remoteStream = new MediaStream();
+  store.setRemoteStream(remoteStream);
+  ui.updateRemoteStream(remoteStream);
+
+  peerConnection.ontrack = (event) => {
+    remoteStream.addTrack(event.track);
+  }
+
+  // add our stream to peer connection
+  if (store.getConnectedUserDetails().callType === constants.callType.VIDEO_PERSONAL_CODE) {
+    const localStream = store.getState().localStream;
+
+    for (const track of localStream.getTracks()) {
+      peerConnection.addTrack(track, localStream);
+    }
+  }
+}
+
 export const getLocalPreview = () => {
   navigator.mediaDevices.getUserMedia(defaultConstraints).then((stream) => {
     ui.updateLocalVideo(stream);
