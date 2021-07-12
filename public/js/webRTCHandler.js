@@ -3,6 +3,21 @@ import * as constants from "./constants.js";
 import * as ui from "./ui.js";
 import * as store from "./store.js";
 
+const defaultConstraints = {
+  audio: true,
+  video: true
+}
+
+export const getLocalPreview = () => {
+  navigator.mediaDevices.getUserMedia(defaultConstraints).then((stream) => {
+    ui.updateLocalVideo(stream);
+    store.setLocalStream(stream);
+  }).catch((error) => {
+    console.log("Error occured when trying to get access to camera");
+    console.log(error);
+  })
+}
+
 export const sendPreOffer = (callType, calleePersonalCode) => {
   store.setConnectedUserDetails({
     callType,

@@ -6,6 +6,7 @@ import * as webRtcHandler from "./webRtcHandler.js";
 // initialization of socket.io connection
 const socket = io("/");
 wss.registerSocketEvents(socket);
+webRtcHandler.getLocalPreview() //set local video to local video container
 
 // register event listner for personalCode copy button
 const personalCodeCopyButton = document.getElementById("personal_code_copy_button");
