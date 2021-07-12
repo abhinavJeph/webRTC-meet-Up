@@ -33,7 +33,7 @@ export const registerSocketEvents = (socket) => {
                 webRTCHandler.handleWebRTCAnswer(data)
                 break;
             case constants.webRTCSignaling.ICE_CANDIDATE:
-                // TODO
+                webRTCHandler.handleWebRTCCandidate(data)
                 break;
         }
     })
