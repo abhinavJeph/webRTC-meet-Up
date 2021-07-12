@@ -9,7 +9,7 @@ wss.registerSocketEvents(socket);
 
 // register event listner for personalCode copy button
 const personalCodeCopyButton = document.getElementById("personal_code_copy_button");
-personalCodeCopyButton.addEventListener("click", () =>{
+personalCodeCopyButton.addEventListener("click", () => {
   const personalCode = store.getState().socketId;
   navigator.clipboard && navigator.clipboard.writeText(personalCode);
 })
@@ -18,16 +18,16 @@ personalCodeCopyButton.addEventListener("click", () =>{
 const personalCodeChatButton = document.getElementById("personal_code_chat_button");
 const personalCodeVideoButton = document.getElementById("personal_code_video_button");
 
-personalCodeChatButton.addEventListener("click", () =>{
+personalCodeChatButton.addEventListener("click", () => {
   const calleePersonalCode = document.getElementById("personal_code_input").value;
-  const callType = constants.CALL_TYPE.CHAT_PERSONAL_CODE;
+  const callType = constants.callType.CHAT_PERSONAL_CODE;
 
   webRtcHandler.sendPreOffer(callType, calleePersonalCode);
 })
 
-personalCodeVideoButton.addEventListener("click", () =>{
+personalCodeVideoButton.addEventListener("click", () => {
   const calleePersonalCode = document.getElementById("personal_code_input").value;
-  const callType = constants.CALL_TYPE.VIDEO_PERSONAL_CODE;
+  const callType = constants.callType.VIDEO_PERSONAL_CODE;
 
   webRtcHandler.sendPreOffer(callType, calleePersonalCode);
 })

@@ -1,5 +1,5 @@
 export const getIncomingCallType = (callerTypeInfo, acceptCallHandler, rejectCallHandler) => {
-    console.log("call dialog box :" + callerTypeInfo );
+    console.log("call dialog box :" + callerTypeInfo);
 
     const dialog = document.createElement("div");
     dialog.classList.add("dialog_wrapper");
@@ -18,7 +18,7 @@ export const getIncomingCallType = (callerTypeInfo, acceptCallHandler, rejectCal
     const avatarImagePath = "../utils/images/dialogAvatar.png"
     image.src = avatarImagePath;
     imageContainer.appendChild(image);
-    dialogContent.appendChild(imageContainer); 
+    dialogContent.appendChild(imageContainer);
 
     const buttonContainer = document.createElement("div");
     buttonContainer.classList.add("dialog_button_container");
@@ -31,7 +31,7 @@ export const getIncomingCallType = (callerTypeInfo, acceptCallHandler, rejectCal
     acceptCallImage.src = acceptCallImagePath;
     acceptCallButton.appendChild(acceptCallImage);
     buttonContainer.appendChild(acceptCallButton);
-    
+
     const rejectCallButton = document.createElement("button");
     rejectCallButton.classList.add("dialog_reject_call_button");
     const rejectCallImage = document.createElement("img");
@@ -39,7 +39,15 @@ export const getIncomingCallType = (callerTypeInfo, acceptCallHandler, rejectCal
     rejectCallImage.src = rejectCallImagePath;
     rejectCallButton.appendChild(rejectCallImage);
     buttonContainer.appendChild(rejectCallButton);
-    
+
+    acceptCallButton.addEventListener("click", () => {
+        acceptCallHandler();
+    })
+
+    rejectCallButton.addEventListener("click", () => {
+        rejectCallHandler();
+    })
+
     return dialog;
 }
 
@@ -63,12 +71,12 @@ export const getCallingDialog = (callingDialogRejectCallHandler) => {
     const avatarImagePath = "../utils/images/dialogAvatar.png"
     image.src = avatarImagePath;
     imageContainer.appendChild(image);
-    dialogContent.appendChild(imageContainer); 
+    dialogContent.appendChild(imageContainer);
 
     const buttonContainer = document.createElement("div");
     buttonContainer.classList.add("dialog_button_container");
     dialogContent.appendChild(buttonContainer);
-    
+
     const hangUpCallButton = document.createElement("button");
     hangUpCallButton.classList.add("dialog_reject_call_button");
     const hangUpCallImage = document.createElement("img");
@@ -76,6 +84,6 @@ export const getCallingDialog = (callingDialogRejectCallHandler) => {
     hangUpCallImage.src = rejectCallImagePath;
     hangUpCallButton.appendChild(hangUpCallImage);
     buttonContainer.appendChild(hangUpCallButton);
-    
+
     return dialog;
 }

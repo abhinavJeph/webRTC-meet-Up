@@ -9,7 +9,7 @@ let state = {
 }
 
 const setStateField = (field, value) => {
-    if(!state.hasOwnProperty(field)) {
+    if (!state.hasOwnProperty(field)) {
         throw new Error("state does not have property " + field);
     }
     state[field] = value;

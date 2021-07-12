@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 let connectedPeers = [];
 
 // when an connection is established
-io.on("connection", (socket) =>{
+io.on("connection", (socket) => {
     // socket is basically a connection between user and webSocket server
     console.log("User connected on socket.io server");
     console.log(socket.id);
@@ -34,10 +34,27 @@ io.on("connection", (socket) =>{
         })
 
         // emit pre-offer to secondary user if he exists
-        if(connectedPeer) {
+        if (connectedPeer) {
             let data = { callType, callerPersonalCode };
             io.to(calleePersonalCode).emit("pre-offer", data);
         }
+    })
+
+    socket.on("pre-offer-answer", (data) => {
+        const { preOfferAnswer, callerPersonalCode } = data;
+        const calleePersonalCode = socket.id;
+
+        //caller/primary user exist ?
+        const connectedPeer = connectedPeers.find(peerSocketId => {
+            return peerSocketId === callerPersonalCode;
+        })
+
+        // emit pre-offer to primary user if he exists
+        if (connectedPeer) {
+            let data = { preOfferAnswer, calleePersonalCode }
+            io.to(callerPersonalCode).emit("pre-offer-answer", data);
+        }
+
     })
 
     // user disconnected
