@@ -43,3 +43,17 @@ export const setScreenSharingActive = (screenSharingActive) => {
 export const getState = () => {
     return state;
 }
+
+let connectedUserDetails = { 
+    callType: null,
+    socketId: null,
+}
+
+export const setConnectedUserDetails = (data) => {
+    connectedUserDetails.callType = data.callType ? data.callType : connectedUserDetails.callType;
+    connectedUserDetails.socketId = data.socketId ? data.socketId : connectedUserDetails.socketId;
+}
+
+export const getConnectedUserDetails = () => {
+    return connectedUserDetails;
+}

@@ -62,3 +62,68 @@ export const showInfoDialog = (preOfferAnswer) => {
         setTimeout(removeAllDialogs, 4000);
     }
 }
+
+export const showCallElements = (callType) => {
+    switch (callType) {
+        case constants.callType.CHAT_PERSONAL_CODE:
+            showChatCallElements();
+            break;
+        case constants.callType.VIDEO_PERSONAL_CODE:
+            showVideoCallElements();
+            break;
+    }
+}
+
+const showChatCallElements = () => {
+    const finishConnectionChatButtonContainer = document.getElementById("finish_chat_button_container");
+    showElement(finishConnectionChatButtonContainer);
+
+    const newMessageContainer = document.getElementById("new_message");
+    showElement(newMessageContainer);
+
+    disableDashboard();
+}
+
+const showVideoCallElements = () => {
+    const callButtons = document.getElementById("call_buttons");
+    showElement(callButtons);
+
+    const placeHolder = document.getElementById("video_placeholder");
+    hideElement(placeHolder);
+    
+    const remoteVideo = document.getElementById("remote_video");
+    showElement(remoteVideo);
+
+    const newMessageContainer = document.getElementById("new_message");
+    showElement(newMessageContainer);
+
+    disableDashboard();
+}
+
+// ui helper functions
+const disableDashboard = () => {
+    const dashboardBlocker = document.getElementById("dashboard_blur");
+    if (dashboardBlocker.classList.contains("display_none")) {
+        dashboardBlocker.classList.remove("display_none")
+    }
+}
+
+// block panel 
+const enableDashboard = () => {
+    const dashboardBlocker = document.getElementById("dashboard_blur");
+    if (!dashboardBlocker.classList.contains("display_none")) {
+        dashboardBlocker.classList.add("display_none")
+    }
+}
+
+const hideElement = (element) => {
+    if (!element.classList.contains("display_none")) {
+        element.classList.add("display_none")
+    }
+}
+
+const showElement = (element) => {
+    if (element.classList.contains("display_none")) {
+        element.classList.remove("display_none")
+    }
+}

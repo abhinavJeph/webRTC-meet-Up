@@ -1,14 +1,13 @@
 import * as wss from "./wss.js";
 import * as constants from "./constants.js";
 import * as ui from "./ui.js";
-
-let connectedUserDetails;
+import * as store from "./store.js";
 
 export const sendPreOffer = (callType, calleePersonalCode) => {
-  connectedUserDetails = {
+  store.setConnectedUserDetails({
     callType,
     socketId: calleePersonalCode,
-  };
+  })
 
   if (callType === constants.callType.CHAT_PERSONAL_CODE || callType === constants.callType.VIDEO_PERSONAL_CODE) {
     let data = { callType, calleePersonalCode };
@@ -19,10 +18,10 @@ export const sendPreOffer = (callType, calleePersonalCode) => {
 
 export const handlePreOffer = (data) => {
   let { callType, callerPersonalCode } = data;
-  connectedUserDetails = {
+  store.setConnectedUserDetails({
     callType,
     socketId: callerPersonalCode,
-  };
+  })
 
   if (callType === constants.callType.CHAT_PERSONAL_CODE || callType === constants.callType.VIDEO_PERSONAL_CODE) {
     ui.showIncomingCallDialog(callType, acceptCallHandler, rejectCallHandler);
@@ -32,6 +31,7 @@ export const handlePreOffer = (data) => {
 const acceptCallHandler = () => {
   console.log("call accepted");
   sendPreOfferAnswer(constants.preOfferAnswer.CALL_ACCEPTED);
+  ui.showCallElements(store.getConnectedUserDetails().callType); //show call elment buttons based on call type
 }
 
 const rejectCallHandler = () => {
@@ -45,7 +45,7 @@ const callingDialogRejectCallHandler = () => {
 
 const sendPreOfferAnswer = (preOfferAnswer) => {
   let data = {
-    callerPersonalCode: connectedUserDetails.socketId,
+    callerPersonalCode: store.getConnectedUserDetails().socketId,
     preOfferAnswer: preOfferAnswer,
   }
 
@@ -60,7 +60,8 @@ export const handlePreOfferAnswer = (data) => {
 
   switch (preOfferAnswer) {
     case constants.preOfferAnswer.CALL_ACCEPTED:
-      ui.showInfoDialog(preOfferAnswer);
+      ui.showCallElements(store.getConnectedUserDetails().callType); //show call elment buttons based on call type
+
       // show the dialog that call is accepted by the callee
       break;
     case constants.preOfferAnswer.CALL_REJECTED:
