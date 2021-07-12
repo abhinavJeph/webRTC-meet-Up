@@ -30,11 +30,11 @@ export const registerSocketEvents = (socket) => {
                 webRTCHandler.handleWebRTCOffer(data)
                 break;
             case constants.webRTCSignaling.ANSWER:
-                // TODO
-            break;
+                webRTCHandler.handleWebRTCAnswer(data)
+                break;
             case constants.webRTCSignaling.ICE_CANDIDATE:
                 // TODO
-            break;
+                break;
         }
     })
 }
