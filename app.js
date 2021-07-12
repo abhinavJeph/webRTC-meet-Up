@@ -63,6 +63,19 @@ io.on("connection", (socket) => {
 
     })
 
+    socket.on("webRTC-signaling", (data) => {
+        const { connectedUserSocketId } = data;
+
+        const connectedPeer = connectedPeers.find(peerSocketId => {
+            return peerSocketId === connectedUserSocketId;
+        })
+
+        // emit pre-offer to primary user if he exists
+        if (connectedPeer) {
+            io.to(connectedUserSocketId).emit("webRTC-signaling", data);
+        }
+    })
+
     // user disconnected
     socket.on("disconnect", () => {
         console.log("User disconnected");

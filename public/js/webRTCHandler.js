@@ -8,14 +8,18 @@ const defaultConstraints = {
   video: true
 }
 
+let peerConnection;
+
 const configuration = {
-  iceServers: {
-    urls: "stun:stun.l.google.com:13902"
-  }
+  iceServers: [
+    {
+      urls: "stun:stun.l.google.com:13902"
+    },
+  ]
 }
 
 const createPeerConnection = () => {
-  let peerConnection = new RTCPeerConnection(configuration);
+  peerConnection = new RTCPeerConnection(configuration);
 
   // getting ice candidate from stun server
   peerConnection.onicecandidate = (event) => {
@@ -90,6 +94,7 @@ const acceptCallHandler = () => {
   console.log("call accepted");
   sendPreOfferAnswer(constants.preOfferAnswer.CALL_ACCEPTED);
   ui.showCallElements(store.getConnectedUserDetails().callType); //show call elment buttons based on call type
+  createPeerConnection()
 }
 
 const rejectCallHandler = () => {
@@ -119,7 +124,8 @@ export const handlePreOfferAnswer = (data) => {
   switch (preOfferAnswer) {
     case constants.preOfferAnswer.CALL_ACCEPTED:
       ui.showCallElements(store.getConnectedUserDetails().callType); //show call elment buttons based on call type
-
+      createPeerConnection();
+      sendWebRTCOffer();
       // show the dialog that call is accepted by the callee
       break;
     case constants.preOfferAnswer.CALL_REJECTED:
@@ -135,4 +141,20 @@ export const handlePreOfferAnswer = (data) => {
       // show the dialog that callee has not been found
       break;
   }
+}
+
+const sendWebRTCOffer = async () => {
+  const offer = await peerConnection.createOffer(); //our sdp information
+  await peerConnection.setLocalDescription(offer); //save sdp information in local 
+
+  wss.sendDataUsingWebRTCSignaling({
+    connectedUserSocketId: store.getConnectedUserDetails().socketId,
+    type: constants.webRTCSignaling.OFFER,
+    offer: offer,   // offer = {sdp, type}
+  });  
+}
+
+export const handleWebRTCOffer = (data) => {
+  console.log("webRTC offer came");
+  console.log(data);
 }

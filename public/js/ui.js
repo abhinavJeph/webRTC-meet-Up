@@ -9,6 +9,19 @@ export const updatePersonalCode = (personalCode) => {
 export const updateLocalVideo = (stream) => {
     const localVideo = document.getElementById("local_video");
     localVideo.srcObject = stream; 
+
+    localVideo.addEventListener("loadedmetadata", () => {
+        localVideo.play();
+    })
+}
+
+export const updateRemoteStream = (stream) => {
+    const remoteVideo = document.getElementById("remote_video");
+    remoteVideo.srcObject = stream; 
+
+    remoteVideo.addEventListener("loadedmetadata", () => {
+        remoteVideo.play();
+    })
 }
 
 export const showIncomingCallDialog = (callType, acceptCallHandler, rejectCallHandler) => {
