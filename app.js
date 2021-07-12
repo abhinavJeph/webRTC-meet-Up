@@ -37,6 +37,12 @@ io.on("connection", (socket) => {
         if (connectedPeer) {
             let data = { callType, callerPersonalCode };
             io.to(calleePersonalCode).emit("pre-offer", data);
+        } else {
+            //else send caller info that callee not found
+            let data = {
+                preOfferAnswer: "CALLEE_NOT_FOUND", calleePersonalCode
+            };
+            io.to(callerPersonalCode).emit("pre-offer-answer", data);
         }
     })
 

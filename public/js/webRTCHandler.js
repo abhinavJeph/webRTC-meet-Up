@@ -48,10 +48,32 @@ const sendPreOfferAnswer = (preOfferAnswer) => {
     callerPersonalCode: connectedUserDetails.socketId,
     preOfferAnswer: preOfferAnswer,
   }
+
+  ui.removeAllDialogs(); // remove all dialog inside html dialog element
   wss.sendPreOfferAnswer(data);
 }
 
 export const handlePreOfferAnswer = (data) => {
   let { preOfferAnswer, calleePersonalCode } = data;
-  console.log(preOfferAnswer + ' from ' + calleePersonalCode);
+  console.log(preOfferAnswer + " from " + calleePersonalCode);
+  ui.removeAllDialogs(); // remove all dialog inside html dialog element
+
+  switch (preOfferAnswer) {
+    case constants.preOfferAnswer.CALL_ACCEPTED:
+      ui.showInfoDialog(preOfferAnswer);
+      // show the dialog that call is accepted by the callee
+      break;
+    case constants.preOfferAnswer.CALL_REJECTED:
+      ui.showInfoDialog(preOfferAnswer);
+      // show the dialog that call is accepted by the callee
+      break;
+    case constants.preOfferAnswer.CALL_UNAVAILABLE:
+      ui.showInfoDialog(preOfferAnswer);
+      // show the dialog that callee is not able to connect
+      break;
+    case constants.preOfferAnswer.CALLEE_NOT_FOUND:
+      ui.showInfoDialog(preOfferAnswer);
+      // show the dialog that callee has not been found
+      break;
+  }
 }
