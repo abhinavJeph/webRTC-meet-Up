@@ -173,3 +173,36 @@ export const clearMessage = () => {
     const messageContainer = document.getElementById("message_container");
     messageContainer.querySelectorAll("*").forEach(n => n.remove());
 }
+
+// recording
+export const showRecordingPanel = () => {
+    const recordingButtons = document.getElementById("video_recording_buttons");
+    showElement(recordingButtons);
+
+    // hide start recording button if active
+    const startRecordingButton = document.getElementById("start_recording_button");
+    hideElement(startRecordingButton);
+}
+
+export const hideRecordingPanel = () => {
+    const recordingButtons = document.getElementById("video_recording_buttons");
+    hideElement(recordingButtons);
+
+    // show start recording button
+    const startRecordingButton = document.getElementById("start_recording_button");
+    showElement(startRecordingButton);
+}
+
+export const switchBetweenRecordingButtons = (showResumeButton = false) => {
+    console.log("switchBetweenRecordingButtons-ui")
+    const pauseRecordingButton = document.getElementById("pause_recording_button");
+    const resumeRecordingButton = document.getElementById("resume_recording_button");
+
+    if (showResumeButton) {
+        showElement(resumeRecordingButton);
+        hideElement(pauseRecordingButton);
+    } else {
+        showElement(pauseRecordingButton);
+        hideElement(resumeRecordingButton);
+    }
+}
