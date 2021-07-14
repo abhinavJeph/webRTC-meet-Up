@@ -56,3 +56,26 @@ switchForScreenSharingButton.addEventListener("click", () => {
   const { screenSharingActive } = store.getState();
   webRTCHandler.switchBetweenCameraAndScreenSharing(screenSharingActive);
 })
+
+//messenger
+const newMessageInput = document.getElementById("new_message_input");
+
+const sendMessage = () => {
+  console.log("Chat Occured");
+  let message = newMessageInput.value;
+  if(!!newMessageInput.value.trim()){
+    webRTCHandler.sendMessageUsingDataChannel(message);
+    ui.appendMessage(message, true);
+  }
+  newMessageInput.value = "";
+}
+
+newMessageInput.addEventListener("keydown", (event) => {
+  const key = event.key;
+  if(key === "Enter") {
+    sendMessage();
+  }
+})
+
+const sendMessageButton = document.getElementById("send_message_button");
+sendMessageButton.addEventListener("click", sendMessage);

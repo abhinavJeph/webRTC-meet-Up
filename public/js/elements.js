@@ -107,3 +107,16 @@ const getDialogBox = (dialogTitle) => {
     dialogContent.appendChild(title);
     return dialogContent;
 }
+
+export const getMessage = (message, isRight) => {
+    const messageContainer = document.createElement("div");
+    let constainerClass = isRight ? "message_right_container" : "message_left_container";
+    messageContainer.classList.add(constainerClass);
+    const messageParagraph = document.createElement("div");
+    let paragraphClass = isRight ? "message_right_paragraph" : "message_left_paragraph";
+    messageParagraph.classList.add(paragraphClass);
+    messageParagraph.innerHTML = message;
+    messageContainer.appendChild(messageParagraph);
+
+    return messageContainer;
+}

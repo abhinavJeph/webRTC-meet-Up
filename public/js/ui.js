@@ -161,3 +161,15 @@ const showElement = (element) => {
         element.classList.remove("display_none")
     }
 }
+
+//ui messages
+export const appendMessage = (message, isRight = false) => {
+    const messagesContainer = document.getElementById("messages_container");
+    const messageElement = elements.getMessage(message, isRight);
+    messagesContainer.appendChild(messageElement);
+}
+
+export const clearMessage = () => {
+    const messageContainer = document.getElementById("message_container");
+    messageContainer.querySelectorAll("*").forEach(n => n.remove());
+}

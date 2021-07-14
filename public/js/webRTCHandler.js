@@ -9,6 +9,7 @@ const defaultConstraints = {
 }
 
 let peerConnection;
+let dataChannel;
 
 const configuration = {
   iceServers: [
@@ -20,6 +21,23 @@ const configuration = {
 
 const createPeerConnection = () => {
   peerConnection = new RTCPeerConnection(configuration);
+
+  dataChannel = peerConnection.createDataChannel("chat"); //label to our dataChanel = chat
+
+  peerConnection.ondatachannel = (event) => {
+    const dataChannel = event.channel;
+
+    dataChannel.onopen = () => {
+      console.log("Peer connection is ready to recieve data channel messages");
+    }
+
+    dataChannel.onmessage = (event) => {
+      console.log("messages received");
+      const message = JSON.parse(event.data);
+      ui.appendMessage(message, false);
+      console.log(message);
+    }
+  }
 
   // getting ice candidate from stun server
   peerConnection.onicecandidate = (event) => {
@@ -69,6 +87,11 @@ export const getLocalPreview = () => {
     console.log("Error occured when trying to get access to camera");
     console.log(error);
   })
+}
+
+export const sendMessageUsingDataChannel = (messaage) => {
+  const stringifiedMessage = JSON.stringify(messaage);
+  dataChannel.send(stringifiedMessage);
 }
 
 export const sendPreOffer = (callType, calleePersonalCode) => {
