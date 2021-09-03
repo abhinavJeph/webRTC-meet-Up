@@ -16,6 +16,9 @@ app.get("/", (req, res) => {
 //to store the socket.id of user
 let connectedPeers = [];
 
+// for strangers
+let connectedPeerStrangers = [];
+
 // when an connection is established
 io.on("connection", (socket) => {
     // socket is basically a connection between user and webSocket server
@@ -88,6 +91,32 @@ io.on("connection", (socket) => {
             io.to(connectedUserSocketId).emit("user-hanged-up");
         }
     })
+
+    socket.on("stranger-connection-status", (data) => {
+        const { status } = data;
+
+        if(status) { //accepting stranger connections
+            connectedPeerStrangers.push(socket.id);
+        }else { //else remove from stranger DB
+            connectedPeerStrangers = connectedPeerStrangers.filter(peerSocketId => peerSocketId !== socket.id);
+        }
+    });
+
+    socket.on("get-stranger-socket-id", () => {
+        let randomStrangerSocketId;
+        let filteredConnectedPeerStrangers = connectedPeerStrangers.filter(peerSocketId => peerSocketId !== socket.id);
+        
+        if(filteredConnectedPeerStrangers.length > 0) {
+            let index = Math.floor(Math.random() * filteredConnectedPeerStrangers.length);
+            randomStrangerSocketId = filteredConnectedPeerStrangers[index];
+        }else {
+            randomStrangerSocketId = null;
+        }
+
+        const data = { randomStrangerSocketId };
+
+        io.to(socket.id).emit("stranger-socket-id", data);
+    });
 
     // user disconnected
     socket.on("disconnect", () => {

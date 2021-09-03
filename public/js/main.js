@@ -40,11 +40,13 @@ personalCodeVideoButton.addEventListener("click", () => {
 const strangerChatButton = document.getElementById("stranger_chat_button");
 strangerChatButton.addEventListener("click", () => {
   //TODO
+  strangerUtils.getStrangerSocketIdAndConnect(constants.callType.CHAT_STRANGER);
 });
 
 const strangerVideoButton = document.getElementById("stranger_video_button");
 strangerVideoButton.addEventListener("click", () => {
   // TODO
+  strangerUtils.getStrangerSocketIdAndConnect(constants.callType.VIDEO_STRANGER);
 })
 
 //register event for allow connection from strangers
