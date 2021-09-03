@@ -137,13 +137,17 @@ const acceptCallHandler = () => {
 }
 
 const rejectCallHandler = () => {
-  console.log("call rejected");
+  // console.log("call rejected");
   sendPreOfferAnswer(constants.preOfferAnswer.CALL_REJECTED);
   store.setConnectedUserDetails(null); //reset connected user details
 }
 
 const callingDialogRejectCallHandler = () => {
-  console.log("rejecting the call");
+  // console.log("rejecting the call");
+  const data = { connectedUserSocketId: store.getConnectedUserDetails().socketId };
+  
+  wss.sendUserHangedUp(data); //same as hang up functionality
+  closePeerConnectionAndResetState();
 }
 
 const sendPreOfferAnswer = (preOfferAnswer, callerSocketId = null) => {
