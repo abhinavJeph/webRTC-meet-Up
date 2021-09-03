@@ -76,6 +76,19 @@ io.on("connection", (socket) => {
         }
     })
 
+    socket.on("user-hanged-up", (data) => {
+        const { connectedUserSocketId } = data;
+
+        const connectedPeer = connectedPeers.find(peerSocketId => {
+            return peerSocketId === connectedUserSocketId;
+        })
+
+        // emit hang up offer to other user if he exists
+        if (connectedPeer) {
+            io.to(connectedUserSocketId).emit("user-hanged-up");
+        }
+    })
+
     // user disconnected
     socket.on("disconnect", () => {
         console.log("User disconnected");

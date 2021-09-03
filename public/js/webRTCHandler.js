@@ -239,3 +239,16 @@ export const switchBetweenCameraAndScreenSharing = async (screenSharingActive) =
     console.log("error occured when trying to switch screen sharing stream", err)
   }
 }
+
+//hang up
+
+export const handleHangUp = () => {
+  console.log("finshing the call");
+  const data = { connectedUserSocketId: store.getConnectedUserDetails().socketId };
+
+  wss.sendUserHangedUp(data);
+}
+
+export const handleConnectedUserHangedUp = () => {
+  console.log("connected peer hanged up");
+}
