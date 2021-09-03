@@ -174,6 +174,11 @@ export const updateUIAfterHangUp = (callType) => {
     removeAllDialogs(); // call dialogue
 }
 
+export const updateStrangerCheckBox = (allowConnections) => {
+    const checkboxImg = document.getElementById("allow_strangers_checkbox_image");
+    allowConnections ? showElement(checkboxImg) : hideElement(checkboxImg);
+}
+
 // ui helper functions
 const disableDashboard = () => {
     const dashboardBlocker = document.getElementById("dashboard_blur");
