@@ -134,6 +134,36 @@ export const updateCameraButton = (cameraActive) => {
     cameraButtonImage.src = cameraActive ? cameraOnImgSrc : cameraOffImgSrc;
 }
 
+//ui after hang up
+export const updateUIAfterHangUp = (callType) => {
+    enableDashboard();
+
+    //hide the call buttons
+    if(callType === constants.callType.VIDEO_PERSONAL_CODE || callType === constants.callType.VIDEO_STRANGER) {
+        const callButtons = document.getElementById("call_buttons");
+        hideElement(callButtons);
+    }else { //chat buttons
+        const chatCallButtons = document.getElementById("finish_chat_button_container");
+        hideElement(chatCallButtons);
+    }
+
+    const newMessageInput = document.getElementById("new_message");
+    hideElement(newMessageInput);
+    clearMessage();
+
+    updateMicButton(false);
+    updateCameraButton(false);
+
+    //hide remoteVideo and show placeHolder
+    const remoteVideo = document.getElementById("remote_video");
+    hideElement(remoteVideo);
+
+    const placeHolder = document.getElementById("video_placeholder");
+    showElement(placeHolder);
+
+    removeAllDialogs(); // call dialogue
+}
+
 // ui helper functions
 const disableDashboard = () => {
     const dashboardBlocker = document.getElementById("dashboard_blur");
@@ -170,7 +200,7 @@ export const appendMessage = (message, isRight = false) => {
 }
 
 export const clearMessage = () => {
-    const messageContainer = document.getElementById("message_container");
+    const messageContainer = document.getElementById("messages_container");
     messageContainer.querySelectorAll("*").forEach(n => n.remove());
 }
 

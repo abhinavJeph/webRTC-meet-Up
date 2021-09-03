@@ -50,8 +50,15 @@ let connectedUserDetails = {
 }
 
 export const setConnectedUserDetails = (data) => {
-    connectedUserDetails.callType = data.callType ? data.callType : connectedUserDetails.callType;
-    connectedUserDetails.socketId = data.socketId ? data.socketId : connectedUserDetails.socketId;
+    if(data == null) {
+        connectedUserDetails = {
+            callType: null,
+            socketId: null,
+        }
+    }else {
+        connectedUserDetails.callType = data.callType ? data.callType : connectedUserDetails.callType;
+        connectedUserDetails.socketId = data.socketId ? data.socketId : connectedUserDetails.socketId;
+    }
 }
 
 export const getConnectedUserDetails = () => {
