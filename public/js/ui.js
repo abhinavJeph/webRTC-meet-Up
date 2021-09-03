@@ -15,6 +15,15 @@ export const updateLocalVideo = (stream) => {
     })
 }
 
+//buttons with which we can make video calls
+export const showVideoCallButtons = () => {
+    const personalCodeVideoButton = document.getElementById("personal_code_video_button");
+    const strangerVideoButton = document.getElementById("stranger_video_button");
+    
+    showElement(personalCodeVideoButton);
+    showElement(strangerVideoButton);
+}
+
 export const updateRemoteStream = (stream) => {
     const remoteVideo = document.getElementById("remote_video");
     remoteVideo.srcObject = stream;
@@ -24,6 +33,7 @@ export const updateRemoteStream = (stream) => {
     })
 }
 
+//Incoming call pop up
 export const showIncomingCallDialog = (callType, acceptCallHandler, rejectCallHandler) => {
     const callerTypeInfo = callType === constants.callType.CHAT_PERSONAL_CODE ? "chat" : "video";
     const incomingCallDialog = elements.getIncomingCallType(callerTypeInfo, acceptCallHandler, rejectCallHandler);

@@ -82,6 +82,8 @@ const createPeerConnection = () => {
 export const getLocalPreview = () => {
   navigator.mediaDevices.getUserMedia(defaultConstraints).then((stream) => {
     ui.updateLocalVideo(stream);
+    ui.showVideoCallButtons(); //if local video available, add video call buttons
+    store.setCallState(constants.callState.CALL_AVAILABLE); //if local video available change call state to video call;
     store.setLocalStream(stream);
   }).catch((error) => {
     console.log("Error occured when trying to get access to camera");
