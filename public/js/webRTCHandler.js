@@ -70,7 +70,9 @@ const createPeerConnection = () => {
   }
 
   // add our stream to peer connection
-  if (store.getConnectedUserDetails().callType === constants.callType.VIDEO_PERSONAL_CODE) {
+  if ([constants.callType.VIDEO_PERSONAL_CODE, constants.callType.VIDEO_STRANGER].some(callType =>
+    callType === store.getConnectedUserDetails().callType
+  )) {
     const localStream = store.getState().localStream;
 
     for (const track of localStream.getTracks()) {
@@ -108,13 +110,21 @@ export const sendPreOffer = (callType, calleePersonalCode) => {
     store.setCallState(constants.callState.CALL_UNAVAILABLE); // when we are making the call request we are unavialable
     wss.sendPreOffer(data);
   }
+
+  if (callType === constants.callType.CHAT_STRANGER || callType === constants.callType.VIDEO_STRANGER) {
+    let data = { callType, calleePersonalCode };
+    //directly make call, no pop up
+    store.setCallState(constants.callState.CALL_UNAVAILABLE); // when we are making the call request we are unavialable
+    wss.sendPreOffer(data);
+  }
+
 };
 
 //call is coming, we have to handle it
 export const handlePreOffer = (data) => {
   let { callType, callerPersonalCode } = data;
 
-  if(checkCallPossibility(callType) == false) {
+  if (checkCallPossibility(callType) == false) {
     return sendPreOfferAnswer(constants.preOfferAnswer.CALL_UNAVAILABLE, callerPersonalCode);
   }
 
@@ -125,6 +135,11 @@ export const handlePreOffer = (data) => {
 
   if (callType === constants.callType.CHAT_PERSONAL_CODE || callType === constants.callType.VIDEO_PERSONAL_CODE) {
     ui.showIncomingCallDialog(callType, acceptCallHandler, rejectCallHandler);
+  }
+
+  if (callType === constants.callType.CHAT_STRANGER || callType === constants.callType.VIDEO_STRANGER) {
+    //directly accept calls, no pop-up request
+    acceptCallHandler();
   }
 }
 
@@ -145,7 +160,7 @@ const rejectCallHandler = () => {
 const callingDialogRejectCallHandler = () => {
   // console.log("rejecting the call");
   const data = { connectedUserSocketId: store.getConnectedUserDetails().socketId };
-  
+
   wss.sendUserHangedUp(data); //same as hang up functionality
   closePeerConnectionAndResetState();
 }
@@ -272,14 +287,14 @@ export const handleConnectedUserHangedUp = () => {
 }
 
 const closePeerConnectionAndResetState = () => {
-  if(peerConnection) {
+  if (peerConnection) {
     peerConnection.close();
     peerConnection = null;
   }
 
   //active mic and camera
   const { callType } = store.getConnectedUserDetails();
-  if(callType === constants.callType.VIDEO_PERSONAL_CODE || callType === constants.callType.VIDEO_STRANGER) {
+  if (callType === constants.callType.VIDEO_PERSONAL_CODE || callType === constants.callType.VIDEO_STRANGER) {
     store.getState().localStream.getVideoTracks()[0].enabled = true;
     store.getState().localStream.getAudioTracks()[0].enabled = true;
   }
@@ -292,9 +307,9 @@ const closePeerConnectionAndResetState = () => {
 const checkCallPossibility = (callType) => {
   const callState = store.getState().callState;
 
-  if(callState === constants.callState.CALL_AVAILABLE) return true;
+  if (callState === constants.callState.CALL_AVAILABLE) return true;
 
-  if((callType === constants.callType.VIDEO_PERSONAL_CODE || callType === constants.callType.VIDEO_STRANGER) && (callState === constants.callState.CALL_AVAILABLE_ONLY_CHAT)) {
+  if ((callType === constants.callType.VIDEO_PERSONAL_CODE || callType === constants.callType.VIDEO_STRANGER) && (callState === constants.callState.CALL_AVAILABLE_ONLY_CHAT)) {
     //if some one calls for video and this person is only available for chat
     return false;
   }
@@ -305,9 +320,9 @@ const checkCallPossibility = (callType) => {
 const setIncomingCallAvailable = () => {
   const localStream = store.getState().localStream;
 
-  if(localStream) {
+  if (localStream) {
     store.setCallState(constants.callState.CALL_AVAILABLE);
-  }else {
+  } else {
     store.setCallState(constants.callState.CALL_AVAILABLE_ONLY_CHAT);
   }
 }

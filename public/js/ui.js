@@ -19,7 +19,7 @@ export const updateLocalVideo = (stream) => {
 export const showVideoCallButtons = () => {
     const personalCodeVideoButton = document.getElementById("personal_code_video_button");
     const strangerVideoButton = document.getElementById("stranger_video_button");
-    
+
     showElement(personalCodeVideoButton);
     showElement(strangerVideoButton);
 }
@@ -96,7 +96,13 @@ export const showCallElements = (callType) => {
         case constants.callType.CHAT_PERSONAL_CODE:
             showChatCallElements();
             break;
+        case constants.callType.CHAT_STRANGER:
+            showChatCallElements();
+            break;
         case constants.callType.VIDEO_PERSONAL_CODE:
+            showVideoCallElements();
+            break;
+        case constants.callType.VIDEO_STRANGER:
             showVideoCallElements();
             break;
     }
@@ -149,10 +155,10 @@ export const updateUIAfterHangUp = (callType) => {
     enableDashboard();
 
     //hide the call buttons
-    if(callType === constants.callType.VIDEO_PERSONAL_CODE || callType === constants.callType.VIDEO_STRANGER) {
+    if (callType === constants.callType.VIDEO_PERSONAL_CODE || callType === constants.callType.VIDEO_STRANGER) {
         const callButtons = document.getElementById("call_buttons");
         hideElement(callButtons);
-    }else { //chat buttons
+    } else { //chat buttons
         const chatCallButtons = document.getElementById("finish_chat_button_container");
         hideElement(chatCallButtons);
     }
