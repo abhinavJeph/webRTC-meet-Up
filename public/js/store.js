@@ -16,7 +16,7 @@ const setStateField = (field, value) => {
         throw new Error("state does not have property " + field);
     }
     state[field] = value;
-    console.log("Updated State: ", state);
+    // console.log("Updated State: ", state);
 }
 
 export const setSocketId = (socketId) => {

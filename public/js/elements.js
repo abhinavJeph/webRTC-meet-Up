@@ -1,5 +1,5 @@
 export const getIncomingCallType = (callerTypeInfo, acceptCallHandler, rejectCallHandler) => {
-    console.log("call dialog box :" + callerTypeInfo);
+    // console.log("call dialog box :" + callerTypeInfo);
 
     const dialogContent = getDialogBox(`Incoming ${callerTypeInfo} call`);
     const dialog = dialogContent.parentElement;
@@ -29,7 +29,7 @@ export const getIncomingCallType = (callerTypeInfo, acceptCallHandler, rejectCal
 }
 
 export const getCallingDialog = (callingDialogRejectCallHandler) => {
-    console.log("calling dialog box");
+    // console.log("calling dialog box");
 
     const dialogContent = getDialogBox("Calling. . .");
     const dialog = dialogContent.parentElement;
@@ -50,7 +50,7 @@ export const getCallingDialog = (callingDialogRejectCallHandler) => {
 }
 
 export const getInfoDialog = (dialogTitle, dialogDescription) => {
-    console.log("Info call dialog box");
+    // console.log("Info call dialog box");
 
     const dialogContent = getDialogBox(dialogTitle);
     const dialog = dialogContent.parentElement;

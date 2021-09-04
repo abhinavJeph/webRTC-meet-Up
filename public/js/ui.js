@@ -255,7 +255,7 @@ export const hideRecordingPanel = () => {
 }
 
 export const switchBetweenRecordingButtons = (showResumeButton = false) => {
-    console.log("switchBetweenRecordingButtons-ui")
+    // console.log("switchBetweenRecordingButtons-ui")
     const pauseRecordingButton = document.getElementById("pause_recording_button");
     const resumeRecordingButton = document.getElementById("resume_recording_button");
 

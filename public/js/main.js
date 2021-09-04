@@ -85,7 +85,7 @@ switchForScreenSharingButton.addEventListener("click", () => {
 const newMessageInput = document.getElementById("new_message_input");
 
 const sendMessage = () => {
-  console.log("Chat Occured");
+  // console.log("Chat Occured");
   let message = newMessageInput.value;
   if(!!newMessageInput.value.trim()){
     webRTCHandler.sendMessageUsingDataChannel(message);

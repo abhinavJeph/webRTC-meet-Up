@@ -7,7 +7,7 @@ const vp9Codec = "video/webm; codecs=vp=9";
 const videoOptions = { mimeType: vp9Codec };
 
 export const startRecording = () => {
-    console.log("startRecording-recordingUtils")
+    // console.log("startRecording-recordingUtils")
     const remoteStream = store.getState().remoteStream;
 
     if (MediaRecorder.isTypeSupported(vp9Codec)) {
@@ -21,22 +21,22 @@ export const startRecording = () => {
 }
 
 export const pauseRecording = () => {
-    console.log("pauseRecording-recordingUtils")
+    // console.log("pauseRecording-recordingUtils")
     mediaRecorder.pause();
 }
 
 export const resumeRecording = () => {
-    console.log("resumeRecording-recordingUtils")
+    // console.log("resumeRecording-recordingUtils")
     mediaRecorder.resume();
 }
 
 export const stopRecording = () => {
-    console.log("stopRecording-recordingUtils")
+    // console.log("stopRecording-recordingUtils")
     mediaRecorder.stop();
 }
 
 const downloadRecordedVideo = () => {
-    console.log("downloadRecordedVideo-recordingUtils")
+    // console.log("downloadRecordedVideo-recordingUtils")
     const blob = new Blob(recordedChunks, { type: 'video/webm' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -49,7 +49,7 @@ const downloadRecordedVideo = () => {
 }
 
 export const handleDataAvailable = (event) => {
-    console.log("handleDataAvailable-recordingUtils")
+    // console.log("handleDataAvailable-recordingUtils")
     if (event.data.size > 0) {
         recordedChunks.push(event.data);
         downloadRecordedVideo();

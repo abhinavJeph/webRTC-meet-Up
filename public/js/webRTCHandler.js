@@ -28,23 +28,23 @@ const createPeerConnection = () => {
     const dataChannel = event.channel;
 
     dataChannel.onopen = () => {
-      console.log("Peer connection is ready to recieve data channel messages");
+      // console.log("Peer connection is ready to recieve data channel messages");
     }
 
     dataChannel.onmessage = (event) => {
-      console.log("messages received");
+      // console.log("messages received");
       const message = JSON.parse(event.data);
       ui.appendMessage(message, false);
-      console.log(message);
+      // console.log(message);
     }
   }
 
   // getting ice candidate from stun server
   peerConnection.onicecandidate = (event) => {
-    console.log("getting ice candidate from stun server");
+    // console.log("getting ice candidate from stun server");
     if (event.candidate) {
       // send our ice candidate to other user
-      console.log("sending ice candidate", event.candidate);
+      // console.log("sending ice candidate", event.candidate);
       wss.sendDataUsingWebRTCSignaling({
         connectedUserSocketId: store.getConnectedUserDetails().socketId,
         type: constants.webRTCSignaling.ICE_CANDIDATE,
@@ -89,7 +89,7 @@ export const getLocalPreview = () => {
     store.setLocalStream(stream);
   }).catch((error) => {
     console.log("Error occured when trying to get access to camera");
-    console.log(error);
+    // console.log(error);
   })
 }
 
@@ -144,7 +144,7 @@ export const handlePreOffer = (data) => {
 }
 
 const acceptCallHandler = () => {
-  console.log("call accepted");
+  // console.log("call accepted");
   sendPreOfferAnswer(constants.preOfferAnswer.CALL_ACCEPTED);
   ui.showCallElements(store.getConnectedUserDetails().callType); //show call elment buttons based on call type
   store.setCallState(constants.callState.CALL_UNAVAILABLE); // when we accept the call request we become unavialable for others 
@@ -175,7 +175,7 @@ const sendPreOfferAnswer = (preOfferAnswer, callerSocketId = null) => {
 
 export const handlePreOfferAnswer = (data) => {
   let { preOfferAnswer, calleePersonalCode } = data;
-  console.log(preOfferAnswer + " from " + calleePersonalCode);
+  // console.log(preOfferAnswer + " from " + calleePersonalCode);
   ui.removeAllDialogs(); // remove all dialog inside html dialog element
 
   switch (preOfferAnswer) {
@@ -215,7 +215,7 @@ const sendWebRTCOffer = async () => {
 }
 
 export const handleWebRTCOffer = async (data) => {
-  console.log("webRTC offer came");
+  // console.log("webRTC offer came");
   await peerConnection.setRemoteDescription(data.offer);
 
   const answer = await peerConnection.createAnswer();
@@ -229,7 +229,7 @@ export const handleWebRTCOffer = async (data) => {
 }
 
 export const handleWebRTCAnswer = async (data) => {
-  console.log("handling webRTC answer");
+  // console.log("handling webRTC answer");
   await peerConnection.setRemoteDescription(data.answer);
 }
 
@@ -249,7 +249,7 @@ export const switchBetweenCameraAndScreenSharing = async (screenSharingActive) =
       store.getState().screenSharingStream.getTracks().forEach(track => track.stop()); //stop stream from sharing
       newStream = localStream;
     } else {
-      console.log("switching fro screen sharing");
+      // console.log("switching for screen sharing");
       const screenSharingStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
       store.setScreenSharingStream(screenSharingStream);
       newStream = screenSharingStream;
