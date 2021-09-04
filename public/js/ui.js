@@ -61,6 +61,16 @@ export const removeAllDialogs = () => {
     dialogHTML.querySelectorAll("*").forEach(dialog => dialog.remove());
 }
 
+export const showNoStrangerAvailableDialogue = () => {
+    const infoDialog = elements.getInfoDialog("No Stranger Available", "Please try again later");
+    if (infoDialog) {
+        const dialog = document.getElementById("dialog");
+        dialog.appendChild(infoDialog);
+
+        setTimeout(removeAllDialogs, 4000);
+    }
+}
+
 export const showInfoDialog = (preOfferAnswer) => {
     let infoDialog;
 
